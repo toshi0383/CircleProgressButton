@@ -55,7 +55,7 @@ open class CircleProgressButton: UIView {
     public var suspendedStrokeColor: UIColor?
     public var completedStrokeColor: UIColor?
     public var touchedAlpha: CGFloat = 0.5
-    public var tapGesture: UITapGestureRecognizer?
+    public let tapGesture = UITapGestureRecognizer()
     public var isDebugEnabled: Bool = false
     public private(set) var state: State = .default {
         didSet {
@@ -140,9 +140,8 @@ open class CircleProgressButton: UIView {
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         // tapGesture
-        let gr = UITapGestureRecognizer(target: self, action: #selector(tap))
-        self.addGestureRecognizer(gr)
-        tapGesture = gr
+        tapGesture.addTarget(self,  action: #selector(tap))
+        self.addGestureRecognizer(tapGesture)
         // progressLayer
         progressLayer.cornerRadius = self.layer.cornerRadius
         progressLayer.contentsScale = UIScreen.main.scale
