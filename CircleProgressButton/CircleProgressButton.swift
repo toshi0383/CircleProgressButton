@@ -47,16 +47,16 @@ open class CircleProgressButton: UIView {
     }
 
     // MARK: Properties
-    public var defaultImage: UIImage?
-    public var inProgressImage: UIImage?
-    public var suspendedImage: UIImage?
-    public var completedImage: UIImage?
-    public var inProgressStrokeColor: UIColor?
-    public var suspendedStrokeColor: UIColor?
-    public var completedStrokeColor: UIColor?
-    public var touchedAlpha: CGFloat = 0.5
+    open var defaultImage: UIImage?
+    open var inProgressImage: UIImage?
+    open var suspendedImage: UIImage?
+    open var completedImage: UIImage?
+    open var inProgressStrokeColor: UIColor?
+    open var suspendedStrokeColor: UIColor?
+    open var completedStrokeColor: UIColor?
+    open var touchedAlpha: CGFloat = 0.5
     public let tapGesture = UITapGestureRecognizer()
-    public var isDebugEnabled: Bool = false
+    open var isDebugEnabled: Bool = false
     public private(set) var state: State = .default {
         didSet {
             if noUpdateUI {

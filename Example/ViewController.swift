@@ -9,6 +9,25 @@
 import CircleProgressButton
 import UIKit
 
+class MyCircleProgressButton: CircleProgressButton {
+    override var defaultImage: UIImage? {
+        set { }
+        get { return UIImage(named: "state0") }
+    }
+    override var inProgressImage: UIImage? {
+        set { }
+        get { return UIImage(named: "state1") }
+    }
+    override var suspendedImage: UIImage? {
+        set { }
+        get { return UIImage(named: "state2") }
+    }
+    override var completedImage: UIImage? {
+        set { }
+        get { return UIImage(named: "completed") }
+    }
+}
+
 extension UIColor {
     convenience init(hex: Int, alpha: CGFloat = 1) {
         let red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
@@ -20,15 +39,12 @@ extension UIColor {
 }
 
 class ViewController : UIViewController {
-    private let button = CircleProgressButton()
+    private let button = MyCircleProgressButton()
     override func loadView() {
+        super.loadView()
         view.backgroundColor = .white
 
         button.backgroundColor = UIColor(hex: 0x333333)
-        button.defaultImage = UIImage(named: "state0")!
-        button.inProgressImage = UIImage(named: "state1")!
-        button.suspendedImage = UIImage(named: "state2")!
-        button.completedImage = UIImage(named: "completed")!
         button.inProgressStrokeColor = UIColor(hex: 0x51C300)
         button.suspendedStrokeColor = UIColor(hex: 0x99C377)
         button.completedStrokeColor = UIColor(hex: 0x51C300)
