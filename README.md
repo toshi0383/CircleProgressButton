@@ -5,6 +5,8 @@ UIView based circle button with CAShapeLayer based progress stroke.
 ![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/circle-progress-button.gif)
 ![platforms](https://img.shields.io/badge/platforms-iOS-yellow.svg)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Cocoapods](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg)](https://cocoapods.org)
+[![pod](https://img.shields.io/cocoapods/v/CircleProgressButton.svg?style=flat)](https://cocoapods.org/pods/CircleProgressButton)
 
 # Requirements
 - iOS9+
