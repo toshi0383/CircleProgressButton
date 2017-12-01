@@ -49,10 +49,10 @@ It is possible to update progress while suspended.
              switch state {
              case .inProgress:
                 print("suspend")
-                self.stopJob()
+                self.suspendJob()
              case .completed:
                 print("delete")
-                self.stopJob()
+                self.cancelJob()
              case .default:
                 print("start")
                 self.resumeJob()
