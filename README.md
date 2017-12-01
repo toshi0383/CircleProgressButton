@@ -15,17 +15,18 @@ UIView based circle button with CAShapeLayer based progress stroke.
 # How to use
 
 ## Customize Appearance
-Colors and icon images are fully customizable. Either override or set preferred values. Actually there's no `default` appearance, so have fun.👋
+Colors and icon images are fully customizable. Either override or set preferred values.  
+Actually there's no `default` appearance, so have fun.👋
 
 ```swift
-    public var defaultImage: UIImage?
-    public var inProgressImage: UIImage?
-    public var suspendedImage: UIImage?
-    public var completedImage: UIImage?
-    public var inProgressStrokeColor: UIColor?
-    public var suspendedStrokeColor: UIColor?
-    public var completedStrokeColor: UIColor?
-    public var touchedAlpha: CGFloat = 0.5
+    open var defaultImage: UIImage?
+    open var inProgressImage: UIImage?
+    open var suspendedImage: UIImage?
+    open var completedImage: UIImage?
+    open var inProgressStrokeColor: UIColor?
+    open var suspendedStrokeColor: UIColor?
+    open var completedStrokeColor: UIColor?
+    open var touchedAlpha: CGFloat = 0.5
 ```
 
 UIImage's `contentMode` is `.center`. Make sure you provide correct size of image.
@@ -35,7 +36,7 @@ UIImage's `contentMode` is `.center`. Make sure you provide correct size of imag
 - `progress`: updates stroke progress
 - `reset()`: mutates both state and progress
 
-It is possible to update progress while suspended.
+It is possible to update progress while suspended.  
 `state` is read-only. Update via `suspend()`, `resume()`, `complete()` and `reset()`.
 
 ## Handle Tap
@@ -48,18 +49,16 @@ It is possible to update progress while suspended.
              switch state {
              case .inProgress:
                 print("suspend")
-                self.button.suspend()
+                self.stopJob()
              case .completed:
                 print("delete")
-                self.button.reset()
+                self.stopJob()
              case .default:
                 print("start")
-                self.button.resume()
-                self.updatePeriodically()
+                self.resumeJob()
              case .suspended:
                 print("resume")
-                self.button.resume()
-                self.updatePeriodically()
+                self.resumeJob()
              }
         }
     }
@@ -80,6 +79,7 @@ It is possible to update progress while suspended.
     }
 ```
 
+## For advanced touch interaction..
 Feel free to assign your `UIGestureRecognizerDelegate`.
 ```swift
     button.tapGesture.delegate = self
