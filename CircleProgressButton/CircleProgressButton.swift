@@ -22,6 +22,7 @@ open class CircleProgressButton: UIView {
     // MARK: Types
     public typealias ProgressType = Float
     public typealias OnTapBlock = (State) -> Void
+
     public enum State {
         case `default`, inProgress, suspended, completed
         public var isSuspended: Bool {
@@ -31,6 +32,12 @@ open class CircleProgressButton: UIView {
             }
         }
     }
+
+    public enum StrokeMode {
+        case border(width: CGFloat)
+        case fill
+    }
+
     public struct DisposeToken {
         private let onDispose: () -> Void
         init(onDispose: @escaping () -> Void) {
@@ -54,9 +61,11 @@ open class CircleProgressButton: UIView {
     open var inProgressStrokeColor: UIColor?
     open var suspendedStrokeColor: UIColor?
     open var completedStrokeColor: UIColor?
+    open var strokeMode: StrokeMode = .fill
     open var touchedAlpha: CGFloat = 0.5
     public let tapGesture = UITapGestureRecognizer()
     open var isDebugEnabled: Bool = false
+
     public private(set) var state: State = .default {
         didSet {
             if noUpdateUI {
@@ -92,11 +101,13 @@ open class CircleProgressButton: UIView {
             updateCircleProgress(progress)
         }
     }
+
     private var counter: Int = 0
     private let lock = NSLock()
     private var noUpdateUI: Bool = false
     private var tapBlocks: [(Int, OnTapBlock)] = []
     private let progressLayer = CAShapeLayer()
+
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .clear
@@ -119,8 +130,14 @@ open class CircleProgressButton: UIView {
     }
 
     public func reset() {
-        progress = 0
-        state = .default
+        // disable implicit CALayer animations
+        self.progressLayer.actions = [
+            "position": NSNull(),
+            "path": NSNull(),
+            "lineWidth": NSNull(),
+        ]
+        self.progress = 0
+        self.state = .default
     }
 
     public func onTap(do block: @escaping OnTapBlock) -> DisposeToken {
@@ -178,14 +195,22 @@ open class CircleProgressButton: UIView {
     }
 
     // MARK: CAShapeLayer manipulation
-    private func circlePath(_ circleWidth: CGFloat, arcCenter: CGPoint) -> CGPath {
+    private func circlePath(_ circleWidth: CGFloat, strokeWidth: CGFloat?, arcCenter: CGPoint) -> CGPath {
         let startAngle: CGFloat = -CGFloat(Double.pi - .pi / 2)
         let endAngle: CGFloat = startAngle + CGFloat(Double.pi * 2)
+        let strokeInset: CGFloat = (strokeWidth ?? 0) / 2
         return UIBezierPath(arcCenter: arcCenter,
-                            radius: circleWidth / 4,
+                            radius: strokeWidth != nil ? circleWidth / 2 - strokeInset + 0.1 : circleWidth / 4 + 0.1,
                             startAngle: startAngle,
                             endAngle: endAngle,
                             clockwise: true).cgPath
+    }
+
+    private var userDefinedStrokeWidth: CGFloat? {
+        if case .border(let width) = strokeMode {
+            return width
+        }
+        return nil
     }
 
     private func updateCircleProgress(_ progress: ProgressType) {
@@ -196,9 +221,9 @@ open class CircleProgressButton: UIView {
         if progressLayer.frame == .zero {
             progressLayer.frame = self.bounds
         }
-        progressLayer.path = circlePath(circleWidth, arcCenter: progressLayer.position)
         progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.lineWidth = circleWidth / 2 + 0.5
+        progressLayer.lineWidth = userDefinedStrokeWidth ?? (circleWidth / 2)
+        progressLayer.path = circlePath(circleWidth, strokeWidth: userDefinedStrokeWidth, arcCenter: progressLayer.position)
         progressLayer.strokeStart = 0.0
         progressLayer.strokeEnd = CGFloat(progress) / 100
     }
@@ -254,6 +279,7 @@ private let queue = DispatchQueue(
     qos: .default,
     target: .global(qos: .default)
 )
+
 private func queuedPrintln<T>(_ object: T) {
     queue.async {
         print("\(object)")

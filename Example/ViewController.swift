@@ -46,7 +46,7 @@ class ViewController : UIViewController {
 
         button.backgroundColor = UIColor(hex: 0x333333)
         button.inProgressStrokeColor = UIColor(hex: 0x51C300)
-        button.suspendedStrokeColor = UIColor(hex: 0x99C377)
+        button.suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
         button.completedStrokeColor = UIColor(hex: 0x51C300)
         button.isDebugEnabled = true
         view.addSubview(button)
@@ -70,6 +70,7 @@ class ViewController : UIViewController {
                 self.button.suspend()
              case .completed:
                 print("delete")
+                self.button.backgroundColor = UIColor(hex: 0x333333)
                 self.button.reset()
              case .default:
                 print("start")
@@ -96,9 +97,11 @@ class ViewController : UIViewController {
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + after) {
             if self.button.progress < 99 {
+                self.button.strokeMode = .border(width: 4)
                 self.button.progress += 1.0
                 self.updatePeriodically()
             } else {
+                self.button.strokeMode = .fill
                 self.button.progress += 1.0
                 self.button.complete()
             }
