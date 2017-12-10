@@ -3,6 +3,7 @@ CircleProgressButton
 UIView based circle button with CAShapeLayer based progress stroke.
 
 ![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/circle-progress-button.gif)
+![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/border-progress.gif)
 ![platforms](https://img.shields.io/badge/platforms-iOS-yellow.svg)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Cocoapods](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg)](https://cocoapods.org)
@@ -26,6 +27,7 @@ Actually there's no `default` appearance, so have fun.👋
     open var inProgressStrokeColor: UIColor?
     open var suspendedStrokeColor: UIColor?
     open var completedStrokeColor: UIColor?
+    open var strokeMode: StrokeMode = .fill
     open var touchedAlpha: CGFloat = 0.5
 ```
 
