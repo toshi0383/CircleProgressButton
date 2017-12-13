@@ -54,9 +54,13 @@ extension UIColor {
 }
 
 class ViewController : UIViewController {
+
     private let button = MyCircleProgressButton(defaultIconTintColor: UIColor(hex: 0xEEEEEE))
+
     override func loadView() {
+
         super.loadView()
+
         view.backgroundColor = .white
 
         button.backgroundColor = UIColor(hex: 0x333333)
@@ -64,17 +68,22 @@ class ViewController : UIViewController {
         button.suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
         button.completedStrokeColor = UIColor(hex: 0x51C300)
         button.isDebugEnabled = true
-        view.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(button)
+
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             button.heightAnchor.constraint(equalToConstant: 44),
             button.widthAnchor.constraint(equalToConstant: 44),
         ])
+
     }
+
     private var token: CircleProgressButton.DisposeToken?
     private var isExecutionStopped: Bool = false
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         token = button.onTap { state in

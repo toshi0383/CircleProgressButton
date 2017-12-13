@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIImage {
+
     func tinted(with tintColor: UIColor) -> UIImage? {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
@@ -21,4 +22,5 @@ extension UIImage {
 
         return tintedImage
     }
+
 }

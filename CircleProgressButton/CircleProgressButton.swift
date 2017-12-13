@@ -26,6 +26,7 @@ open class CircleProgressButton: UIView {
 
     public enum State {
         case `default`, inProgress, suspended, completed
+
         public var isSuspended: Bool {
             switch self {
             case .suspended: return true
@@ -40,10 +41,13 @@ open class CircleProgressButton: UIView {
     }
 
     public struct DisposeToken {
+
         private let onDispose: () -> Void
+
         init(onDispose: @escaping () -> Void) {
             self.onDispose = onDispose
         }
+
         public func dispose() {
             onDispose()
         }
@@ -158,6 +162,7 @@ open class CircleProgressButton: UIView {
         lock.unlock()
         let counter = self.counter
         tapBlocks.append((counter, block))
+
         return DisposeToken { [weak self] in
             if let index = self?.tapBlocks.index(where: { $0.0 == counter }) {
                 self?.tapBlocks.remove(at: index)
@@ -167,14 +172,18 @@ open class CircleProgressButton: UIView {
 
     // MARK: LifeCycle
     open override func didMoveToSuperview() {
+
         super.didMoveToSuperview()
+
         // tapGesture
         tapGesture.addTarget(self,  action: #selector(tap))
         self.addGestureRecognizer(tapGesture)
+
         // progressLayer
         progressLayer.cornerRadius = self.layer.cornerRadius
         progressLayer.contentsScale = UIScreen.main.scale
         self.layer.addSublayer(progressLayer)
+
         // imageView
         imageView.frame = self.bounds
         state = .default // This triggers initial UI update.
@@ -229,10 +238,13 @@ open class CircleProgressButton: UIView {
         if isDebugEnabled {
             queuedPrintln("[updateCircleProgress] state: \(state), progress: \(progress)")
         }
+
         let circleWidth = self.layer.bounds.size.width
+
         if progressLayer.frame == .zero {
             progressLayer.frame = self.bounds
         }
+
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.lineWidth = userDefinedStrokeWidth ?? (circleWidth / 2)
         progressLayer.path = circlePath(circleWidth, strokeWidth: userDefinedStrokeWidth, arcCenter: progressLayer.position)
@@ -263,14 +275,17 @@ open class CircleProgressButton: UIView {
     }
 
     private func performScaleAnimation(_ view: UIView) {
+
         let animations: () -> Void = {
             view.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         }
+
         let completion: (Bool) -> Void = { _ in
             UIView.animate(withDuration: 0.1) {
                 view.transform = .identity
             }
         }
+
         UIView.animate(withDuration: 0.2,
                        delay: 0,
                        usingSpringWithDamping: 1,
