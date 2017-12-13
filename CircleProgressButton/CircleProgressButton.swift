@@ -20,6 +20,7 @@ import UIKit
 open class CircleProgressButton: UIView {
 
     // MARK: Types
+
     public typealias ProgressType = Float
     public typealias OnTapBlock = (State) -> Void
 
@@ -49,11 +50,21 @@ open class CircleProgressButton: UIView {
     }
 
     // MARK: Initialize / Deinitialize
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     deinit {
         self.tapBlocks.removeAll()
     }
 
     // MARK: Properties
+
     open var defaultImage: UIImage?
     open var inProgressImage: UIImage?
     open var suspendedImage: UIImage?
@@ -117,6 +128,7 @@ open class CircleProgressButton: UIView {
     }()
 
     // MARK: Public API
+
     public func suspend() {
         state = .suspended
     }
@@ -229,6 +241,7 @@ open class CircleProgressButton: UIView {
     }
 
     // MARK: Utilities
+
     private func updateImageIfNeeded(for state: State) {
         switch state {
         case .default:

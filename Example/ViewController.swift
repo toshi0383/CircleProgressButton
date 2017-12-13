@@ -10,18 +10,33 @@ import CircleProgressButton
 import UIKit
 
 class MyCircleProgressButton: CircleProgressButton {
+
+    private let iconTintColor: UIColor
+
+    init(defaultIconTintColor: UIColor) {
+        self.iconTintColor = defaultIconTintColor
+        super.init(frame: .zero)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override var defaultImage: UIImage? {
         set { }
-        get { return UIImage(named: "state0") }
+        get { return UIImage(named: "state0")?.tinted(with: iconTintColor) }
     }
+
     override var inProgressImage: UIImage? {
         set { }
         get { return UIImage(named: "state1") }
     }
+
     override var suspendedImage: UIImage? {
         set { }
         get { return UIImage(named: "state2") }
     }
+
     override var completedImage: UIImage? {
         set { }
         get { return UIImage(named: "completed") }
@@ -39,7 +54,7 @@ extension UIColor {
 }
 
 class ViewController : UIViewController {
-    private let button = MyCircleProgressButton()
+    private let button = MyCircleProgressButton(defaultIconTintColor: UIColor(hex: 0xEEEEEE))
     override func loadView() {
         super.loadView()
         view.backgroundColor = .white

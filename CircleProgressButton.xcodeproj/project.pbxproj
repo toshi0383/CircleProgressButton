@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F6990201FE0CBEA006791E8 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F69901F1FE0CBEA006791E8 /* UIImageExtension.swift */; };
 		1FF2D4FF1FCE9D6200DD19B8 /* CircleProgressButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FF2D4FD1FCE9D6200DD19B8 /* CircleProgressButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FF2D5061FCE9D9800DD19B8 /* CircleProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF2D5051FCE9D9800DD19B8 /* CircleProgressButton.swift */; };
 		1FF2D50E1FCE9DBC00DD19B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF2D50D1FCE9DBC00DD19B8 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F69901F1FE0CBEA006791E8 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		1FF2D4FA1FCE9D6200DD19B8 /* CircleProgressButton.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CircleProgressButton.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FF2D4FD1FCE9D6200DD19B8 /* CircleProgressButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CircleProgressButton.h; sourceTree = "<group>"; };
 		1FF2D4FE1FCE9D6200DD19B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				1FF2D5141FCE9DBC00DD19B8 /* Assets.xcassets */,
 				1FF2D5161FCE9DBC00DD19B8 /* LaunchScreen.storyboard */,
 				1FF2D5191FCE9DBC00DD19B8 /* Info.plist */,
+				1F69901F1FE0CBEA006791E8 /* UIImageExtension.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 			files = (
 				1FF2D5101FCE9DBC00DD19B8 /* ViewController.swift in Sources */,
 				1FF2D50E1FCE9DBC00DD19B8 /* AppDelegate.swift in Sources */,
+				1F6990201FE0CBEA006791E8 /* UIImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
