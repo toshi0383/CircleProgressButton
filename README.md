@@ -37,6 +37,7 @@ UIImage's `contentMode` is `.center`. Make sure you provide correct size of imag
 - `state`: updates color and icon image
 - `progress`: updates stroke progress
 - `reset()`: mutates both state and progress
+- `complete()`: mutates both state and progress
 
 It is possible to update progress while suspended.  
 `state` is read-only. Update via `suspend()`, `resume()`, `complete()` and `reset()`.
