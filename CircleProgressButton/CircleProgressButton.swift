@@ -143,6 +143,7 @@ open class CircleProgressButton: UIView {
 
     public func complete() {
         state = .completed
+        progress = 100
     }
 
     public func reset() {

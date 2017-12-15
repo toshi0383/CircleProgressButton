@@ -126,7 +126,6 @@ class ViewController : UIViewController {
                 self.updatePeriodically()
             } else {
                 self.button.strokeMode = .fill
-                self.button.progress += 1.0
                 self.button.complete()
             }
         }
