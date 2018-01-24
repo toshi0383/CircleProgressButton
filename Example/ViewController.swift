@@ -101,7 +101,7 @@ class ViewController : UIViewController {
              case .default:
                 print("start")
                 self.button.resume()
-                self.button.strokeMode = .dashedBorder(borderWidth: 4, pattern: [4, 4], offset: 0)
+                self.button.strokeMode = .dashedBorder(borderWidth: 4, pattern: [3.94], offset: 0)
                 self.button.progress = 100
                 self.isExecutionStopped = false
                 self.updatePeriodically(2.0)
