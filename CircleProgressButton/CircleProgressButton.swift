@@ -37,6 +37,15 @@ open class CircleProgressButton: UIView {
 
     public enum StrokeMode {
         case border(width: CGFloat)
+
+        /// Dashed Border
+        ///
+        /// - borderWidth: border's width
+        /// - pattern: Applied to CAShapeLayer.lineDashPattern
+        ///     e.g. [dashWidth, gap, otherDashWidth, otherGap ...]
+        /// - offset: Applied to CAShapeLayer.lineDashPhase
+        case dashedBorder(borderWidth: CGFloat, pattern: [NSNumber], offset: CGFloat)
+
         case fill
     }
 
@@ -232,6 +241,16 @@ open class CircleProgressButton: UIView {
         if case .border(let width) = strokeMode {
             return width
         }
+        if case .dashedBorder(let borderWidth, _, _) = strokeMode {
+            return borderWidth
+        }
+        return nil
+    }
+
+    private var dashedPatterns: (pattern: [NSNumber], offset: CGFloat)? {
+        if case .dashedBorder(_, let pattern, let offset) = strokeMode {
+            return (pattern, offset)
+        }
         return nil
     }
 
@@ -249,6 +268,13 @@ open class CircleProgressButton: UIView {
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.lineWidth = userDefinedStrokeWidth ?? (circleWidth / 2)
         progressLayer.path = circlePath(circleWidth, strokeWidth: userDefinedStrokeWidth, arcCenter: progressLayer.position)
+        if let (pattern, offset) = dashedPatterns {
+            progressLayer.lineDashPattern = pattern
+            progressLayer.lineDashPhase = offset
+        } else {
+            progressLayer.lineDashPattern = []
+            progressLayer.lineDashPhase = 0
+        }
         progressLayer.strokeStart = 0.0
         progressLayer.strokeEnd = CGFloat(progress) / 100
     }

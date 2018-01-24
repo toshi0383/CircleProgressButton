@@ -29,17 +29,17 @@ class MyCircleProgressButton: CircleProgressButton {
 
     override var inProgressImage: UIImage? {
         set { }
-        get { return UIImage(named: "state1") }
+        get { return UIImage(named: "state1")?.tinted(with: iconTintColor) }
     }
 
     override var suspendedImage: UIImage? {
         set { }
-        get { return UIImage(named: "state2") }
+        get { return UIImage(named: "state2")?.tinted(with: iconTintColor) }
     }
 
     override var completedImage: UIImage? {
         set { }
-        get { return UIImage(named: "completed") }
+        get { return UIImage(named: "completed")?.tinted(with: iconTintColor) }
     }
 }
 
@@ -53,9 +53,11 @@ extension UIColor {
     }
 }
 
+private var _progress: Float = 0
+
 class ViewController : UIViewController {
 
-    private let button = MyCircleProgressButton(defaultIconTintColor: UIColor(hex: 0xEEEEEE))
+    private let button = MyCircleProgressButton(defaultIconTintColor: UIColor(hex: 0xA3A3A3))
 
     override func loadView() {
 
@@ -63,10 +65,10 @@ class ViewController : UIViewController {
 
         view.backgroundColor = .white
 
-        button.backgroundColor = UIColor(hex: 0x333333)
-        button.inProgressStrokeColor = UIColor(hex: 0x51C300)
+        button.backgroundColor = .clear
+        button.inProgressStrokeColor = UIColor(hex: 0xFFF211)
         button.suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
-        button.completedStrokeColor = UIColor(hex: 0x51C300)
+        button.completedStrokeColor = UIColor(hex: 0xFFF211)
         button.isDebugEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
 
@@ -94,13 +96,15 @@ class ViewController : UIViewController {
                 self.button.suspend()
              case .completed:
                 print("delete")
-                self.button.backgroundColor = UIColor(hex: 0x333333)
+                _progress = 0
                 self.button.reset()
              case .default:
                 print("start")
                 self.button.resume()
+                self.button.strokeMode = .dashedBorder(borderWidth: 4, pattern: [4, 4], offset: 0)
+                self.button.progress = 100
                 self.isExecutionStopped = false
-                self.updatePeriodically()
+                self.updatePeriodically(2.0)
              case .suspended:
                 print("resume")
                 self.button.resume()
@@ -120,9 +124,10 @@ class ViewController : UIViewController {
             return
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + after) {
-            if self.button.progress < 99 {
+            if _progress < 99 {
+                _progress += 1.0
+                self.button.progress = _progress
                 self.button.strokeMode = .border(width: 4)
-                self.button.progress += 1.0
                 self.updatePeriodically()
             } else {
                 self.button.strokeMode = .fill
