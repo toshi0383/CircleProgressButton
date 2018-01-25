@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'CircleProgressButton'
-  s.version          = '0.3.2'
+  s.version          = '0.5.1'
   s.summary          = 'UIView based circle button with CAShapeLayer based progress stroke'
   s.description      = <<-DESC
         'UIView based circle button with CAShapeLayer based progress stroke.'
