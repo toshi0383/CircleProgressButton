@@ -48,10 +48,10 @@ It is possible to update progress while suspended.
 
 ## Disable/Enable Animations
 By default implicit CALayer's animations are enabled.
-You can disable this behavior either by
+You can disable or enable this behavior either by
 
-- setting `animated` property false
-- Use `CircleProgressButton#animate(_:)` or `CircleProgressButton#performWithoutAnimation(_:)`
+- mutating `animationEnableOptions` property
+- Use `CircleProgressButton#animate(animationEnableOption:_:)` or `CircleProgressButton#performWithoutAnimation(animationEnableOption:_:)`
 
 ## Handle Tap
 ```swift
