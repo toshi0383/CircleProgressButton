@@ -63,6 +63,22 @@ open class CircleProgressButton: UIView {
         }
     }
 
+    public struct AnimationEnableOptions: OptionSet {
+
+        public let rawValue: Int
+
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+
+        /// progressLayer's implicit animation
+        public static let circle = AnimationEnableOptions(rawValue: 1 << 0)
+        /// icon scaling animation on complete()
+        public static let iconScale = AnimationEnableOptions(rawValue: 1 << 1)
+
+        public static let all: AnimationEnableOptions = [.circle, .iconScale]
+    }
+
     // MARK: Initialize / Deinitialize
 
     public override init(frame: CGRect) {
@@ -90,25 +106,33 @@ open class CircleProgressButton: UIView {
     open var touchedAlpha: CGFloat = 0.5
     public let tapGesture = UITapGestureRecognizer()
 
-    public var animated: Bool = true {
+    public var animationEnableOptions: AnimationEnableOptions = .all {
         didSet {
-
-            let action: CAAction = animated
-                ? { () -> CAAction in
-                    let anim = CABasicAnimation()
-                    anim.duration = 0.25 // CALayer's implicit default value
-                    return anim }()
-                : NSNull()
-
-            // disable or enable implicit CALayer animations
-            self.progressLayer.actions = [
-                "position": action,
-                "path": action,
-                "lineWidth": action,
-                "strokeStart": action,
-                "strokeEnd": action,
-            ]
+            _disableOrEnableCALayerAnimations(animationEnableOptions.contains(.circle))
         }
+    }
+
+    private lazy var implicitAnimation: CAAction = { () -> CAAction in
+        let anim = CABasicAnimation()
+        anim.duration = 0.25 // CALayer's implicit default value
+        return anim
+    }()
+
+    private var isIconScaleAnimated: Bool {
+        return animationEnableOptions.contains(.iconScale)
+    }
+
+    private func _disableOrEnableCALayerAnimations(_ animated: Bool) {
+        let action: CAAction = animated ? implicitAnimation : NSNull()
+
+        // disable or enable implicit CALayer animations
+        let actions = ["position": action,
+                       "path": action,
+                       "lineWidth": action,
+                       "strokeStart": action,
+                       "strokeEnd": action]
+
+        self.progressLayer.actions = actions
     }
 
     open var isDebugEnabled: Bool = false
@@ -191,21 +215,21 @@ open class CircleProgressButton: UIView {
         }
     }
 
-    public func animate(block: () -> ()) {
-        _perform(animated: true, block: block)
+    public func animate(animationEnableOptions: AnimationEnableOptions? = nil, block: () -> ()) {
+        _perform(animationEnableOptions: animationEnableOptions ?? .all, block: block)
     }
 
-    public func performWithoutAnimation(block: () -> ()) {
-        _perform(animated: false, block: block)
+    public func performWithoutAnimation(animationEnableOptions: AnimationEnableOptions?, block: () -> ()) {
+        _perform(animationEnableOptions: animationEnableOptions ?? [], block: block)
     }
 
-    private func _perform(animated: Bool, block: () -> ()) {
+    private func _perform(animationEnableOptions: AnimationEnableOptions, block: () -> ()) {
         animationLock.lock()
         defer { animationLock.unlock() }
-        let oldValue = self.animated
-        self.animated = animated
+        let oldValue = self.animationEnableOptions
+        self.animationEnableOptions = animationEnableOptions
         block()
-        self.animated = oldValue
+        self.animationEnableOptions = oldValue
     }
 
     // MARK: LifeCycle
@@ -325,7 +349,7 @@ open class CircleProgressButton: UIView {
             }
         case .completed:
             imageView.image = completedImage
-            if animated {
+            if isIconScaleAnimated {
                 performScaleAnimation(imageView)
             }
         }
@@ -364,3 +388,4 @@ private func queuedPrintln<T>(_ object: T) {
         print("\(object)")
     }
 }
+

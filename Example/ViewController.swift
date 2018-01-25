@@ -16,7 +16,7 @@ class MyCircleProgressButton: CircleProgressButton {
     init(defaultIconTintColor: UIColor) {
         self.iconTintColor = defaultIconTintColor
         super.init(frame: .zero)
-        animated = false
+        animationEnableOptions = .iconScale
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -131,10 +131,8 @@ class ViewController : UIViewController {
                 self.button.strokeMode = .border(width: 4)
                 self.updatePeriodically()
             } else {
-                self.button.animate {
-                    self.button.strokeMode = .fill
-                    self.button.complete()
-                }
+                self.button.strokeMode = .fill
+                self.button.complete()
             }
         }
     }
