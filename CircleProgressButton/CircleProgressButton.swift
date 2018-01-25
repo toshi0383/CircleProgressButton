@@ -128,8 +128,13 @@ open class CircleProgressButton: UIView {
 
         // disable or enable implicit CALayer animations
         let actions = ["position": action,
+                       "frame": action,
+                       "bounds": action,
                        "path": action,
                        "lineWidth": action,
+                       "lineDashPattern": action,
+                       "lineDashPhase": action,
+                       "fillColor": action,
                        "strokeStart": action,
                        "strokeEnd": action]
 
