@@ -23,6 +23,7 @@ open class CircleProgressButton: UIView {
 
     public typealias ProgressType = Float
     public typealias OnTapBlock = (State) -> Void
+    public static let progressRange: ClosedRange<ProgressType> = 0...100
 
     public enum State {
         case `default`, inProgress, suspended, completed

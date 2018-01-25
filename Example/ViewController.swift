@@ -97,13 +97,13 @@ class ViewController : UIViewController {
                 self.button.suspend()
              case .completed:
                 print("delete")
-                _progress = 0
+                _progress = CircleProgressButton.progressRange.lowerBound
                 self.button.reset()
              case .default:
                 print("start")
                 self.button.resume()
                 self.button.strokeMode = .dashedBorder(borderWidth: 4, pattern: [3.94], offset: 0)
-                self.button.progress = 100
+                self.button.progress = CircleProgressButton.progressRange.upperBound
                 self.isExecutionStopped = false
                 self.updatePeriodically(2.0)
              case .suspended:
