@@ -73,6 +73,7 @@ open class CircleProgressButton: UIView {
 
         /// progressLayer's implicit animation
         public static let circle = AnimationEnableOptions(rawValue: 1 << 0)
+
         /// icon scaling animation on complete()
         public static let iconScale = AnimationEnableOptions(rawValue: 1 << 1)
 
