@@ -215,12 +215,12 @@ open class CircleProgressButton: UIView {
         }
     }
 
-    public func animate(animationEnableOptions: AnimationEnableOptions? = nil, block: () -> ()) {
-        _perform(animationEnableOptions: animationEnableOptions ?? .all, block: block)
+    public func animate(animationEnableOptions: AnimationEnableOptions = .all, block: () -> ()) {
+        _perform(animationEnableOptions: animationEnableOptions, block: block)
     }
 
-    public func performWithoutAnimation(animationEnableOptions: AnimationEnableOptions?, block: () -> ()) {
-        _perform(animationEnableOptions: animationEnableOptions ?? [], block: block)
+    public func performWithoutAnimation(animationEnableOptions: AnimationEnableOptions = [], block: () -> ()) {
+        _perform(animationEnableOptions: animationEnableOptions, block: block)
     }
 
     private func _perform(animationEnableOptions: AnimationEnableOptions, block: () -> ()) {
