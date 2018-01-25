@@ -88,13 +88,32 @@ open class CircleProgressButton: UIView {
     open var strokeMode: StrokeMode = .fill
     open var touchedAlpha: CGFloat = 0.5
     public let tapGesture = UITapGestureRecognizer()
+
+    public var animated: Bool = true {
+        didSet {
+
+            let action: CAAction = animated
+                ? { () -> CAAction in
+                    let anim = CABasicAnimation()
+                    anim.duration = 0.25 // CALayer's implicit default value
+                    return anim }()
+                : NSNull()
+
+            // disable or enable implicit CALayer animations
+            self.progressLayer.actions = [
+                "position": action,
+                "path": action,
+                "lineWidth": action,
+                "strokeStart": action,
+                "strokeEnd": action,
+            ]
+        }
+    }
+
     open var isDebugEnabled: Bool = false
 
     public private(set) var state: State = .default {
         didSet {
-            if noUpdateUI {
-                return
-            }
             updateImageIfNeeded(for: state)
             switch state {
             case .default:
@@ -119,16 +138,13 @@ open class CircleProgressButton: UIView {
 
     public var progress: ProgressType = 0 {
         didSet {
-            if noUpdateUI {
-                return
-            }
             updateCircleProgress(progress)
         }
     }
 
     private var counter: Int = 0
-    private let lock = NSLock()
-    private var noUpdateUI: Bool = false
+    private let onTapLock = NSLock()
+    private let animationLock = NSRecursiveLock()
     private var tapBlocks: [(Int, OnTapBlock)] = []
     private let progressLayer = CAShapeLayer()
 
@@ -156,20 +172,14 @@ open class CircleProgressButton: UIView {
     }
 
     public func reset() {
-        // disable implicit CALayer animations
-        self.progressLayer.actions = [
-            "position": NSNull(),
-            "path": NSNull(),
-            "lineWidth": NSNull(),
-        ]
         self.progress = 0
         self.state = .default
     }
 
     public func onTap(do block: @escaping OnTapBlock) -> DisposeToken {
-        lock.lock()
+        onTapLock.lock()
         self.counter += 1
-        lock.unlock()
+        onTapLock.unlock()
         let counter = self.counter
         tapBlocks.append((counter, block))
 
@@ -178,6 +188,23 @@ open class CircleProgressButton: UIView {
                 self?.tapBlocks.remove(at: index)
             }
         }
+    }
+
+    public func animate(block: () -> ()) {
+        _perform(animated: true, block: block)
+    }
+
+    public func performWithoutAnimation(block: () -> ()) {
+        _perform(animated: false, block: block)
+    }
+
+    private func _perform(animated: Bool, block: () -> ()) {
+        animationLock.lock()
+        defer { animationLock.unlock() }
+        let oldValue = self.animated
+        self.animated = animated
+        block()
+        self.animated = oldValue
     }
 
     // MARK: LifeCycle
@@ -297,7 +324,9 @@ open class CircleProgressButton: UIView {
             }
         case .completed:
             imageView.image = completedImage
-            performScaleAnimation(imageView)
+            if animated {
+                performScaleAnimation(imageView)
+            }
         }
     }
 
@@ -320,12 +349,6 @@ open class CircleProgressButton: UIView {
                        options: [],
                        animations: animations,
                        completion: completion)
-    }
-
-    private func performWithoutUIUpdate(_ block: () -> Void) {
-        self.noUpdateUI = true
-        block()
-        self.noUpdateUI = false
     }
 }
 
