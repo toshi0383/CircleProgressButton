@@ -67,9 +67,9 @@ class ViewController : UIViewController {
         view.backgroundColor = .white
 
         button.backgroundColor = .clear
-        button.inProgressStrokeColor = UIColor(hex: 0xFFF211)
+        button.inProgressStrokeColor = UIColor(hex: 0x0044C3)
         button.suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
-        button.completedStrokeColor = UIColor(hex: 0xFFF211)
+        button.completedStrokeColor = UIColor(hex: 0x0044C3)
         button.isDebugEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
 

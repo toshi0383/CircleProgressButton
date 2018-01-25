@@ -5,6 +5,8 @@ UIView based circle button with CAShapeLayer based progress stroke.
 ![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/circle-progress-button.gif)
 ![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/border-progress.gif)
 ![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/dashed-yellow-circle.gif)
+![](https://github.com/toshi0383/assets/blob/master/CircleProgressButton/blue-circle-less-animations.gif)
+
 ![platforms](https://img.shields.io/badge/platforms-iOS-yellow.svg)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Cocoapods](https://img.shields.io/badge/Cocoapods-compatible-brightgreen.svg)](https://cocoapods.org)
@@ -30,6 +32,7 @@ Actually there's no `default` appearance, so have fun.👋
     open var completedStrokeColor: UIColor?
     open var strokeMode: StrokeMode = .fill
     open var touchedAlpha: CGFloat = 0.5
+    public var animated: Bool = true
 ```
 
 UIImage's `contentMode` is `.center`. Make sure you provide correct size of image.
@@ -42,6 +45,13 @@ UIImage's `contentMode` is `.center`. Make sure you provide correct size of imag
 
 It is possible to update progress while suspended.  
 `state` is read-only. Update via `suspend()`, `resume()`, `complete()` and `reset()`.
+
+## Disable/Enable Animations
+By default implicit CALayer's animations are enabled.
+You can disable this behavior either by
+
+- setting `animated` property false
+- Use `CircleProgressButton#animate(_:)` or `CircleProgressButton#performWithoutAnimation(_:)`
 
 ## Handle Tap
 ```swift
