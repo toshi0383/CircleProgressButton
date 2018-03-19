@@ -319,6 +319,10 @@ open class CircleProgressButton: UIView {
 
         let circleWidth = self.layer.bounds.size.width
 
+        if circleWidth == 0 {
+            assertionFailure("circleWidth is unexpectedly zero.")
+        }
+
         if progressLayer.frame == .zero {
             progressLayer.frame = self.bounds
         }
