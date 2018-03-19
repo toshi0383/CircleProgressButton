@@ -17,6 +17,9 @@ class MyCircleProgressButton: CircleProgressButton {
         self.iconTintColor = defaultIconTintColor
         super.init(frame: .zero)
         animationEnableOptions = .iconScale
+        inProgressStrokeColor = UIColor(hex: 0x0044C3)
+        suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
+        completedStrokeColor = UIColor(hex: 0x0044C3)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -60,16 +63,23 @@ class ViewController : UIViewController {
 
     private let button = MyCircleProgressButton(defaultIconTintColor: UIColor(hex: 0xA3A3A3))
 
+    private let tableView: UITableView = {
+        let tv = UITableView()
+        tv.preservesSuperviewLayoutMargins = true
+        tv.register(TableViewCell.self, forCellReuseIdentifier: "TableViewCell")
+        return tv
+    }()
+
+    private(set) var items: [Item] = createItems()
+
     override func loadView() {
 
         super.loadView()
 
         view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         button.backgroundColor = .clear
-        button.inProgressStrokeColor = UIColor(hex: 0x0044C3)
-        button.suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
-        button.completedStrokeColor = UIColor(hex: 0x0044C3)
         button.isDebugEnabled = true
         button.translatesAutoresizingMaskIntoConstraints = false
 
@@ -77,11 +87,21 @@ class ViewController : UIViewController {
 
         NSLayoutConstraint.activate([
             button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             button.heightAnchor.constraint(equalToConstant: 44),
             button.widthAnchor.constraint(equalToConstant: 44),
         ])
 
+        // tableview
+        tableView.dataSource = self
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
 
     private var token: CircleProgressButton.DisposeToken?
@@ -136,4 +156,39 @@ class ViewController : UIViewController {
             }
         }
     }
+}
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
+        cell.progressState = items[indexPath.row].state
+        return cell
+    }
+}
+
+private func createItems() -> [Item] {
+    return [
+        .init(state: .inactive(0)),
+        .init(state: .completed),
+        .init(state: .active(0)),
+        .init(state: .active(50)),
+        .init(state: .active(65)),
+        .init(state: .completed),
+        .init(state: .inactive(0)),
+        .init(state: .completed),
+        .init(state: .active(0)),
+        .init(state: .active(50)),
+        .init(state: .active(65)),
+        .init(state: .completed),
+        .init(state: .inactive(0)),
+        .init(state: .completed),
+        .init(state: .active(0)),
+        .init(state: .active(50)),
+        .init(state: .active(65)),
+        .init(state: .completed),
+    ]
 }
