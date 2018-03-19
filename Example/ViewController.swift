@@ -165,6 +165,12 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell") as! TableViewCell
+
+        // IMPORTANT:
+        //   frame is .zero after the first initialization of this cell.
+        //   Make sure layout before letting CircleProgressButton.framework to calculate the `circleWidth`.
+        cell.layoutIfNeeded()
+
         cell.progressState = items[indexPath.row].state
         return cell
     }
