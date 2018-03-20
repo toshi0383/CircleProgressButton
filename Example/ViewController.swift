@@ -19,7 +19,7 @@ class MyCircleProgressButton: CircleProgressButton {
         animationEnableOptions = .iconScale
         inProgressStrokeColor = UIColor(hex: 0x0044C3)
         suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
-        completedStrokeColor = UIColor(hex: 0x0044C3)
+        completedStrokeColor = .clear
     }
 
     required init?(coder aDecoder: NSCoder) {
