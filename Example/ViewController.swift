@@ -151,7 +151,7 @@ class ViewController : UIViewController {
                 self.button.strokeMode = .border(width: 4)
                 self.updatePeriodically()
             } else {
-                self.button.strokeMode = .fill
+                self.button.strokeMode = .border(width: 0)
                 self.button.complete()
             }
         }
