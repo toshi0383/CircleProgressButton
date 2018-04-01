@@ -13,8 +13,13 @@ final class TableViewCell: UITableViewCell {
 
     private let progressButton = MyCircleProgressButton(defaultIconTintColor: UIColor(hex: 0xA3A3A3))
 
+    private var isFirstAfterReused: Bool = true
+
     var progressState: Item.State = .inactive(0) {
         didSet {
+            progressButton.animationEnableOptions = isFirstAfterReused ? [] : [.iconScale]
+            isFirstAfterReused = false
+
             progressButton.progress = progressState.progress
 
             switch progressState {
@@ -23,6 +28,7 @@ final class TableViewCell: UITableViewCell {
             case .inactive:
                 progressButton.suspend()
             case .completed:
+                progressButton.strokeMode = .border(width: 0)
                 progressButton.complete()
             }
         }
@@ -36,6 +42,12 @@ final class TableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         configure()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        isFirstAfterReused = true
     }
 
     private func configure() {
