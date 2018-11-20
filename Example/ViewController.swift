@@ -1,61 +1,5 @@
-//
-//  ViewController.swift
-//  Example
-//
-//  Created by Toshihiro Suzuki on 2017/11/29.
-//  Copyright © 2017 toshi0383. All rights reserved.
-//
-
 import CircleProgressButton
 import UIKit
-
-class MyCircleProgressButton: CircleProgressButton {
-
-    private let iconTintColor: UIColor
-
-    init(defaultIconTintColor: UIColor) {
-        self.iconTintColor = defaultIconTintColor
-        super.init(frame: .zero)
-        animationEnableOptions = .iconScale
-        inProgressStrokeColor = UIColor(hex: 0x0044C3)
-        suspendedStrokeColor = UIColor(hex: 0x8C8C8C)
-        completedStrokeColor = .clear
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override var defaultImage: UIImage? {
-        set { }
-        get { return UIImage(named: "state0")?.tinted(with: iconTintColor) }
-    }
-
-    override var inProgressImage: UIImage? {
-        set { }
-        get { return UIImage(named: "state1")?.tinted(with: iconTintColor) }
-    }
-
-    override var suspendedImage: UIImage? {
-        set { }
-        get { return UIImage(named: "state2")?.tinted(with: iconTintColor) }
-    }
-
-    override var completedImage: UIImage? {
-        set { }
-        get { return UIImage(named: "completed")?.tinted(with: iconTintColor) }
-    }
-}
-
-extension UIColor {
-    convenience init(hex: Int, alpha: CGFloat = 1) {
-        let red = CGFloat((hex & 0xFF0000) >> 16) / 255.0
-        let green = CGFloat((hex & 0x00FF00) >> 8) / 255.0
-        let blue = CGFloat(hex & 0x0000FF) / 255.0
-
-        self.init(displayP3Red: red, green: green, blue: blue, alpha: alpha)
-    }
-}
 
 private var _progress: Float = 0
 
@@ -109,16 +53,20 @@ class ViewController : UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         token = button.onTap { state in
+
              switch state {
              case .inProgress:
                 print("suspend")
                 self.isExecutionStopped = true
                 self.button.suspend()
+
              case .completed:
                 print("delete")
                 _progress = CircleProgressButton.progressRange.lowerBound
                 self.button.reset()
+
              case .default:
                 print("start")
                 self.button.resume()
@@ -126,17 +74,20 @@ class ViewController : UIViewController {
                 self.button.progress = CircleProgressButton.progressRange.upperBound
                 self.isExecutionStopped = false
                 self.updatePeriodically(2.0)
+
              case .suspended:
                 print("resume")
                 self.button.resume()
                 self.isExecutionStopped = false
                 self.updatePeriodically()
+
              }
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         token?.dispose()
     }
 
@@ -144,6 +95,7 @@ class ViewController : UIViewController {
         guard !isExecutionStopped else {
             return
         }
+
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + after) {
             if _progress < 99 {
                 _progress += 1.0
@@ -151,7 +103,7 @@ class ViewController : UIViewController {
                 self.button.strokeMode = .border(width: 4)
                 self.updatePeriodically()
             } else {
-                self.button.strokeMode = .border(width: 0)
+                self.button.strokeMode = .fill
                 self.button.complete()
             }
         }
@@ -159,6 +111,7 @@ class ViewController : UIViewController {
 }
 
 extension ViewController: UITableViewDataSource {
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }

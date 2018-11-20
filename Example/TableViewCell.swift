@@ -28,7 +28,7 @@ final class TableViewCell: UITableViewCell {
             case .inactive:
                 progressButton.suspend()
             case .completed:
-                progressButton.strokeMode = .border(width: 0)
+                progressButton.strokeMode = .fill
                 progressButton.complete()
             }
         }
@@ -54,7 +54,9 @@ final class TableViewCell: UITableViewCell {
         preservesSuperviewLayoutMargins = true
 
         addSubview(progressButton)
+
         progressButton.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate([
             progressButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             progressButton.widthAnchor.constraint(equalToConstant: 44),
