@@ -14,7 +14,7 @@ UIView based circle button with CAShapeLayer based progress stroke.
 
 # Requirements
 - iOS9+
-- Swift4+
+- Swift4.2
 
 # How to use
 
