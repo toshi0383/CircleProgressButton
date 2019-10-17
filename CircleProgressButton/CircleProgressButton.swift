@@ -215,7 +215,7 @@ open class CircleProgressButton: UIView {
         tapBlocks.append((counter, block))
 
         return DisposeToken { [weak self] in
-            if let index = self?.tapBlocks.index(where: { $0.0 == counter }) {
+            if let index = self?.tapBlocks.firstIndex(where: { $0.0 == counter }) {
                 self?.tapBlocks.remove(at: index)
             }
         }
